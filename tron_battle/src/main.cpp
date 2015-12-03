@@ -291,7 +291,7 @@ public:
 class FactoryStrategy
 {
 public:
-	FactoryStrategy(const Arena &arena) : _arena(arena) {}
+	FactoryStrategy(const ArenaInterface &arena) : _arena(arena) {}
 
 	shared_ptr<StrategyInterface> getStrategy()
 	{
@@ -299,7 +299,7 @@ public:
 		return make_shared<RandomStrategy>();
 	}
 private:
-	const Arena _arena;
+	const ArenaInterface &_arena;
 };
 
 int main()
