@@ -9,6 +9,7 @@
 #include <map>
 #include <set>
 #include <algorithm>
+#include <memory>
 
 
 using namespace std;
@@ -284,6 +285,23 @@ public:
 	}
 };
 
+/**
+ * Factory choosing the best strategy according to the situation.
+ */
+class FactoryStrategy
+{
+public:
+	FactoryStrategy(const ArenaInterface &arena) : _arena(arena) {}
+
+	shared_ptr<StrategyInterface> getStrategy()
+	{
+		// TODO for now we always return the RandomStrategy
+		return make_shared<RandomStrategy>();
+	}
+private:
+	const ArenaInterface &_arena;
+};
+
 int main()
 {
 	Arena arena;
@@ -311,8 +329,10 @@ int main()
 
 		arena.print();
 
-		StrategyInterface &strategy = randomStrategy;
+		FactoryStrategy aFactoryStrategy(arena);
 
-		cout << kDirectionString[(int)strategy.getNextDirection(arena)] << endl; // A single line with UP, DOWN, LEFT or RIGHT
+		shared_ptr<StrategyInterface> strategy = aFactoryStrategy.getStrategy();
+
+		cout << kDirectionString[(int)strategy->getNextDirection(arena)] << endl; // A single line with UP, DOWN, LEFT or RIGHT
 	}
 }
